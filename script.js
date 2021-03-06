@@ -1,5 +1,5 @@
 
-const player = () => {
+const game = () => {
 
  let currentPlayer = "X"
 
@@ -8,10 +8,10 @@ const player = () => {
 		if(event.target.tagName.toUpperCase() == 'DIV') {
 			event.target.innerHTML = `<p>${currentPlayer}</p>`;
 			let index = event.target.className;
-			game.board[index] = currentPlayer;
+			gameboard.board[index] = currentPlayer;
 			handlePlayerChange();
 			checkWinner();
-			console.log(game.board)
+			console.log(gameboard.board)
   		}
   	})
   }
@@ -34,35 +34,48 @@ const player = () => {
  const checkWinner = function() {
  	let roundWon = false;
  	let winner = "no winner";
+ 	let draw = !gameboard.board.includes("block")
  	for (let i = 0; i < 8; i++) {
 		let winCondition = winningConditions[i];
-		let a = game.board[winCondition[0]];
-		let b = game.board[winCondition[1]];
-		let c = game.board[winCondition[2]];
+		let a = gameboard.board[winCondition[0]];
+		let b = gameboard.board[winCondition[1]];
+		let c = gameboard.board[winCondition[2]];
  		if (a === "X" && b === "X" && c === "X") {
  			roundWon = true;
  			winner = "X"
- 		} if ( a === "0" && b === "O" && c === "0") {
+ 		} else if ( a === "0" && b === "O" && c === "0") {
  			roundWon = true;
  			winner = "O";
+ 		} else if ( draw ) {
+ 			roundWon = true;
+ 			winner = "draw"
+
  		}
+
+ 	}
+
+ 	if (roundWon) {
+ 		let statusMessage
+ 		if( winner === "X" || winner === "O") {
+ 			statusMessage = `${winner} has won the game!`
+ 		} else statusMessage = "It's a draw" 
+ 		document.querySelector(".status").textContent = statusMessage;
  	}
 
  }
 
-return { handleCellPlayed }
-
+	return { handleCellPlayed }
 };
 
 
-const game = (() => {
+const gameboard = (() => {
 	const board = []
 	const createBoard = function() {
 		const main = document.querySelector(".gameboard")
 		for(let i=0; i < 9; i++) {
 			let block = document.createElement("div");
 			block.classList.add(i);
-			board.push(block);
+			board.push("block");
 			main.appendChild(block);
 		}
 		return board
@@ -72,6 +85,6 @@ const game = (() => {
 
 })();
 
-game.createBoard()
-const player1 = player()
-player1.handleCellPlayed()
+gameboard.createBoard()
+const round1 = game()
+round1.handleCellPlayed()
