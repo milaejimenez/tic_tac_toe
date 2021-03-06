@@ -1,0 +1,26 @@
+.gameboard {
+	display: grid;
+	grid-template-columns: repeat(3, auto);
+	width: 300px;
+	height: 300px;
+	margin: 50px auto;
+}
+
+div {
+	border: 2px solid red;
+	font-family: "Permanent Marker", cursive;
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+    cursor: pointer;
+}
+
+div:hover {
+	background-color: lightgrey;
+}
+
+div p {
+	margin: 0;
+	line-height: 100px;
+	text-align: center;
+}
